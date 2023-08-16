@@ -1,5 +1,4 @@
-﻿using Clientes.Data;
-using Clientes.Models;
+﻿using Clientes.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography.X509Certificates;
@@ -11,9 +10,9 @@ namespace Clientes.Controllers
     public class ClientesController : Controller
     {
 
-        private readonly ClientesAPIDbContext dbContext;
+        private readonly Contexto dbContext;
 
-        public  ClientesController(ClientesAPIDbContext dbContext)
+        public  ClientesController(Contexto dbContext)
         {
 
             this.dbContext = dbContext;
@@ -23,7 +22,7 @@ namespace Clientes.Controllers
         [HttpGet]   
         public async Task <IActionResult> GetClientes()
         {
-            return Ok( await dbContext.Clientes.ToListAsync());
+            return Ok( await dbContext.Cliente.ToListAsync());
          
         }
 
@@ -35,13 +34,11 @@ namespace Clientes.Controllers
             {
                 Id = Guid.NewGuid(),
                 Nome = addClienteRequest.Nome,
-                Email = addClienteRequest.Email,
-                Celular = addClienteRequest.Celular,
-                Endereco = addClienteRequest.Endereco
+                
 
             };
 
-            await dbContext.Clientes.AddAsync(cliente);
+            await dbContext.Cliente.AddAsync(cliente);
             await dbContext.SaveChangesAsync();
 
             return Ok(cliente);
@@ -51,14 +48,12 @@ namespace Clientes.Controllers
         [Route("{id:guid}")]
         public async Task<IActionResult> UpdateCliente([FromRoute] Guid id, UpdateClienteRequest updateClienteRequest)
         {
-            var cliente = await dbContext.Clientes.FindAsync(id);
+            var cliente = await dbContext.Cliente.FindAsync(id);
 
             if (cliente != null)
             {
                 cliente.Nome = updateClienteRequest.Nome;
-                cliente.Email = updateClienteRequest.Email;
-                cliente.Celular = updateClienteRequest.Celular;
-                cliente.Endereco = updateClienteRequest.Endereco;
+                
 
                 await dbContext.SaveChangesAsync();
 
@@ -76,7 +71,7 @@ namespace Clientes.Controllers
             [Route("{id:guid}")]
             public async Task<IActionResult> DeleteCliente([FromRoute] Guid id)
         {
-            var cliente = await dbContext.Clientes.FindAsync(id);
+            var cliente = await dbContext.Cliente.FindAsync(id);
 
             if(cliente != null)
             {

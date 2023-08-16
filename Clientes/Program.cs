@@ -1,4 +1,4 @@
-using Clientes.Data;
+using Clientes.Models;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<ClientesAPIDbContext>(options => options.UseInMemoryDatabase("ClientesDb"));  
+builder.Services.AddDbContext<Contexto>(options => options.UseSqlServer("Data Source=LYNX;Initial Catalog=Crud_Clientes; Integrated Security=False; User ID=sa;Password=tdbtdb77;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False"));  
 
 var app = builder.Build();
 
